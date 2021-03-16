@@ -1,0 +1,8 @@
+{
+    "nombreApp": "",
+    "rutas": [{
+        "ruta": "alert",
+        "icon": "add_alert",
+        "texto": "Alertas"
+    }]
+}
