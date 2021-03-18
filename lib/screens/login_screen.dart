@@ -16,16 +16,15 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
   final usuario = TextEditingController();
   final password = TextEditingController();
-
-  String usu = '', pass = '';
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
+        child: Container(
+          //onTap: () => FocusScope.of(context).unfocus(),
           child: Stack(
             children: <Widget>[
               Container(
@@ -53,32 +52,34 @@ class _LoginScreenState extends State<LoginScreen> {
                     horizontal: 40.0,
                     vertical: 120.0,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Iniciar sesión',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
+                  child: _isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Iniciar sesión',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'OpenSans',
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 20.0),
+                            _buildEmailTF(),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            _buildPasswordTF(),
+                            _buildForgotPasswordBtn(),
+                            _buildRememberMeCheckbox(),
+                            _buildLoginBtn(),
+                            _buildSignInWithText(),
+                            _buildSocialBtnRow(),
+                            _buildSignupBtn(),
+                          ],
                         ),
-                      ),
-                      SizedBox(height: 20.0),
-                      _buildEmailTF(),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      _buildPasswordTF(),
-                      _buildForgotPasswordBtn(),
-                      _buildRememberMeCheckbox(),
-                      _buildLoginBtn(),
-                      _buildSignInWithText(),
-                      _buildSocialBtnRow(),
-                      _buildSignupBtn(),
-                    ],
-                  ),
                 ),
               )
             ],
@@ -139,6 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 60.0,
           child: TextField(
             controller: password,
+            keyboardType: TextInputType.visiblePassword,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -208,33 +210,10 @@ class _LoginScreenState extends State<LoginScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          usu = usuario.text;
-          pass = password.text;
-
-          print(usu + '  ' + pass);
-
-          if (usu == 'juan' && pass == '123') {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (BuildContext context) {
-                return InicioPage();
-              }),
-            );
-          } else {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('error'),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: [
-                          Text('verifica tus datos'),
-                        ],
-                      ),
-                    ),
-                  );
-                });
-          }
+          setState(() {
+            _isLoading = true;
+          });
+          singIn(usuario.text, password.text);
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -255,21 +234,43 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  singIn(String usu, pass) async {
-    Map data = {};
+  singIn(String _usu, _pass) async {
     String _url = 'efectivo.com.do';
-    final url = Uri.https(
-        _url, 'Api/public/api/getUser', {'admin': usu, 'password': pass});
+    final url =
+        Uri.https(_url, '/Api/public/api/getUser/' + _usu + '/' + _pass);
     var jsonDta = null;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var response = await http.post(url, body: data);
+    var response = await http.post(url);
 
     if (response.statusCode == 200) {
+      _isLoading = false;
+
       jsonDta = json.decode(response.body);
+
+      sharedPreferences.setString("id", jsonDta['id'].toString());
+
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => InicioPage()),
+          (Route<dynamic> route) => false);
+    } else {
       setState(() {
-        sharedPreferences.setString('token', jsonDta['token']);
-        
+        _isLoading = false;
       });
+
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('error'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: [
+                    Text('verifica tus datos'),
+                  ],
+                ),
+              ),
+            );
+          });
     }
   }
 
