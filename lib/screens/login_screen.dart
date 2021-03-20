@@ -52,31 +52,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     horizontal: 40.0,
                     vertical: 120.0,
                   ),
-                  child: _isLoading
-                      ? Center(child: CircularProgressIndicator())
-                      : Column(
+                  child: _isLoading ? Center(child: CircularProgressIndicator()) : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(
-                              'Iniciar sesión',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'OpenSans',
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            _logoImagen(),
+                            SizedBox(height: 20.0,),
                             SizedBox(height: 20.0),
                             _buildEmailTF(),
-                            SizedBox(
-                              height: 20.0,
-                            ),
+                            SizedBox(height: 20.0,),
                             _buildPasswordTF(),
                             _buildForgotPasswordBtn(),
                             _buildRememberMeCheckbox(),
                             _buildLoginBtn(),
-                            _buildSignInWithText(),
-                            _buildSocialBtnRow(),
+                            //_buildSignInWithText(),
+                            //_buildSocialBtnRow(),
                             _buildSignupBtn(),
                           ],
                         ),
@@ -93,10 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'Email',
-          style: kLabelStyle,
-        ),
+        
         SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
@@ -129,10 +115,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'Contraseña',
-          style: kLabelStyle,
-        ),
         SizedBox(height: 10.0),
         Container(
           alignment: Alignment.centerLeft,
@@ -245,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.statusCode == 200) {
       _isLoading = false;
 
-      jsonDta = json.decode(response.body);
+     jsonDta = json.decode(response.body);
 
       sharedPreferences.setString("id", jsonDta['id'].toString());
 
@@ -274,6 +256,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Widget _logoImagen(){
+    return Container(
+      child: Image(image: AssetImage('assets/imagenes/logo_efectivo.jpg')),
+    );
+  }
+
   Widget _buildSignInWithText() {
     return Column(
       children: <Widget>[
@@ -283,59 +271,6 @@ class _LoginScreenState extends State<LoginScreen> {
           style: kLabelStyle,
         ),
       ],
-    );
-  }
-
-  Widget _buildSocialBtn(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 60.0,
-        width: 60.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(2, 4),
-              blurRadius: 6.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: logo,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialBtnRow() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _buildSocialBtn(
-            () => print('Login with Facebook'),
-            AssetImage(
-              'assets/logos/facebook.jpg',
-            ),
-          ),
-          _buildSocialBtn(
-            () => print('Login with Google'),
-            AssetImage(
-              'assets/logos/google.jpg',
-            ),
-          ),
-          _buildSocialBtn(
-            () => print('Login with twitter'),
-            AssetImage(
-              'assets/logos/Twitter_logo.jpg',
-            ),
-          ),
-        ],
-      ),
     );
   }
 
