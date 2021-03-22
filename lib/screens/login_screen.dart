@@ -35,10 +35,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Color(0xFF73AEF5),
-                      Color(0xFF61A4F1),
-                      Color(0xFF478DE0),
-                      Color(0xFF398AE5),
+                      Color(0xFFFFFFFF),
+                      Color(0xFFFFFFFF),
+                      Color(0xFFFFFFFF),
+                      Color(0xFFFFFFFF),
                     ],
                     stops: [0.1, 0.4, 0.7, 0.9],
                   ),
@@ -57,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: <Widget>[
                             _logoImagen(),
                             SizedBox(height: 20.0,),
+                            Text('Sistema de gestion para negocio', style: kLabelStyle,),
                             SizedBox(height: 20.0),
                             _buildEmailTF(),
                             SizedBox(height: 20.0,),
@@ -64,8 +65,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             _buildForgotPasswordBtn(),
                             _buildRememberMeCheckbox(),
                             _buildLoginBtn(),
-                            //_buildSignInWithText(),
-                            //_buildSocialBtnRow(),
                             _buildSignupBtn(),
                           ],
                         ),
@@ -92,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: usuario,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.grey,
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
@@ -102,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Icons.email,
                 color: Colors.white,
               ),
-              hintText: 'Introduce tu Email',
+              hintText: 'Introduce tu Usuario',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -125,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.grey,
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
@@ -201,11 +200,11 @@ class _LoginScreenState extends State<LoginScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
-        color: Colors.white,
+        color: Colors.green,
         child: Text(
           'Iniciar',
           style: TextStyle(
-            color: Color(0xFF527DAA),
+            color: Colors.white,
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -229,11 +228,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
      jsonDta = json.decode(response.body);
 
-      sharedPreferences.setString("id", jsonDta['id'].toString());
+    sharedPreferences.setString("id", jsonDta['id'].toString());
 
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => InicioPage()),
-          (Route<dynamic> route) => false);
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => InicioPage()),
+      (Route<dynamic> route) => false);
     } else {
       setState(() {
         _isLoading = false;
@@ -262,17 +261,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildSignInWithText() {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 10.0),
-        Text(
-          'Inicia sesión con',
-          style: kLabelStyle,
-        ),
-      ],
-    );
-  }
 
   Widget _buildSignupBtn() {
     return GestureDetector(
@@ -283,7 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextSpan(
               text: 'No tienes una cuenta? ',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.grey,
                 fontSize: 18.0,
                 fontWeight: FontWeight.w400,
               ),
@@ -291,7 +279,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextSpan(
               text: 'Registrate!!',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.grey,
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
