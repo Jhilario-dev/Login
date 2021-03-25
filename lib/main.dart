@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/screens/login_screen.dart';
+import 'package:flutter_login_ui/src/pages/Facturas_page.dart';
 import 'package:flutter_login_ui/src/pages/inicio_page.dart';
 import 'package:flutter_login_ui/src/pages/productos_page.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Login UI',
       debugShowCheckedModeBanner: false,
       
-      //home: LoginScreen(),
+      // home: LoginScreen(),
 
       initialRoute: '/',
 
@@ -21,8 +22,11 @@ class MyApp extends StatelessWidget {
         '/' :(BuildContext context) =>LoginScreen(),
         'inicio' : (BuildContext context) => InicioPage(),
         'productos': (BuildContext context) => ProductosPage(),
-
+        'facturas': (BuildContext context) => FacturaPage(),
       }
     );
   }
+
+
+  
 }
