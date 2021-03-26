@@ -3,12 +3,14 @@ class ProductosApi {
   String alertQuantity;
   String image;
   String productDescription;
+  String businessId;
 
   ProductosApi(
-      {this.name, this.productDescription, this.image, this.alertQuantity});
+      {this.name, this.productDescription, this.image, this.alertQuantity, this.businessId});
 
   ProductosApi.fromJson(Map<String, dynamic> json) {
     name = json['name'];
+    businessId = json['business_id'].toString();
     alertQuantity = json['alert_quantity'];
     if (json['image'] == null ) {
       image = 'https://i0.wp.com/www.frentecreativo.com/wp-content/uploads/2019/07/photo_2019-07-03_17-38-20.jpg?fit=1280%2C720&ssl=1';

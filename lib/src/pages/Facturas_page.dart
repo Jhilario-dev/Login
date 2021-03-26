@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/utilities/Facturas_api.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FacturaPage extends StatefulWidget {
   FacturaPage({Key key}) : super(key: key);
@@ -12,18 +13,11 @@ class FacturaPage extends StatefulWidget {
   @override
   _FacturaPageState createState() => _FacturaPageState();
 }
-
-class _FacturaPageState extends State<FacturaPage> {
   List<FacturasApi> _registros = [];
 
-  @override
-  void initState() {
-    
-    setState(() {
-      tomarDatos();
-    });
-    super.initState();
-  }
+class _FacturaPageState extends State<FacturaPage> {
+SharedPreferences empresa;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +35,9 @@ class _FacturaPageState extends State<FacturaPage> {
 
   Future<List<FacturasApi>> tomarDatos() async {
     String _url = 'efectivo.com.do';
-    final url = Uri.https(_url, '/Api/public/api/transactions/1');
+    empresa = await SharedPreferences.getInstance();
+    var empre = empresa.getString('businessId');
+    final url = Uri.https(_url, '/Api/public/api/transactions/'+ empre);
     var response = await http.get(url);
     var jsonDta = json.decode(response.body);
     for (jsonDta in jsonDta) {

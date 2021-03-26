@@ -4,19 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_login_ui/utilities/Productos_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductosPage extends StatefulWidget {
   @override
   _ProductosPageState createState() => _ProductosPageState();
 }
 
+  List<ProductosApi> registros = [];
 class _ProductosPageState extends State<ProductosPage> {
    @override
   void initState() {
     _tomarDatos();
     super.initState();
   }
-  List<ProductosApi> registros = [];
+SharedPreferences empresa;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,10 @@ class _ProductosPageState extends State<ProductosPage> {
 
   Future<List<ProductosApi>> _tomarDatos() async {
     String _url = 'efectivo.com.do';
-    final url = Uri.https(_url, '/Api/public/api/products/1');
+
+    empresa = await SharedPreferences.getInstance();
+    var empre = empresa.getString('businessId');
+    final url = Uri.https(_url, '/Api/public/api/products/'+ empre );
     var response = await http.get(url);
     var jsonDta = json.decode(response.body);
     for (jsonDta in jsonDta) {

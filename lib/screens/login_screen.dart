@@ -221,6 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Uri.https(_url, '/Api/public/api/getUser/' + _usu + '/' + _pass);
     var jsonDta = null;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    SharedPreferences empresa = await SharedPreferences.getInstance();
     var response = await http.post(url);
 
     if (response.statusCode == 200) {
@@ -229,6 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
      jsonDta = json.decode(response.body);
 
     sharedPreferences.setString("id", jsonDta['id'].toString());
+    empresa.setString("businessId", jsonDta['business_id'].toString());
 
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (BuildContext context) => InicioPage()),
