@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FacturaPage extends StatefulWidget {
-  FacturaPage({Key key}) : super(key: key);
 
   @override
   _FacturaPageState createState() => _FacturaPageState();
@@ -17,7 +16,13 @@ class FacturaPage extends StatefulWidget {
 
 class _FacturaPageState extends State<FacturaPage> {
 SharedPreferences empresa;
-  
+  @override
+  void initState() {
+    
+
+    super.initState();
+    tomarDatos();
+  }
 
   @override
   Widget build(BuildContext context) {

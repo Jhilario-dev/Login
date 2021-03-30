@@ -1,57 +1,21 @@
-import 'dart:convert';
-import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_login_ui/utilities/constants.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_login_ui/utilities/Productos_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ProductosPage extends StatefulWidget {
-  @override
-  _ProductosPageState createState() => _ProductosPageState();
-}
 
-  List<ProductosApi> registros = [];
-class _ProductosPageState extends State<ProductosPage> {
-   @override
-  void initState() {
-    _tomarDatos();
-    super.initState();
-  }
-SharedPreferences empresa;
+
+class ProductosWidget extends StatelessWidget {
+
+  final SharedPreferences empresa;
+  final List<ProductosApi> registros;
+
+  ProductosWidget({@required this.registros, this.empresa});
+ 
+
 
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
-      appBar: AppBar(
-        title: Text('Productos'),
-        
-      ),
-      body: Column(
-        children: [
-          verDatos(),
-        ],
-      ),
-    );
-
-  }
-
-  Future<List<ProductosApi>> _tomarDatos() async {
-    String _url = 'efectivo.com.do';
-
-    empresa = await SharedPreferences.getInstance();
-    var empre = empresa.getString('businessId');
-    final url = Uri.https(_url, '/Api/public/api/products/'+ empre );
-    var response = await http.get(url);
-    var jsonDta = json.decode(response.body);
-    for (jsonDta in jsonDta) {
-      
-        registros.add(ProductosApi.fromJson(jsonDta));
-      
-    }
-    return registros;
-  }
-  Widget verDatos() {
     return Expanded(
       child: ListView.builder(
         itemCount: registros.length,
@@ -80,15 +44,13 @@ SharedPreferences empresa;
             },
             child: Container(
               
-              padding: EdgeInsets.all(5),
-              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+              margin: EdgeInsets.symmetric(horizontal: 5),
               child: FittedBox(
                 child: Material(
                   
                   color: Colors.white,
-                  elevation: 14.0,
-                  borderRadius: BorderRadius.circular(3.0),
-                  shadowColor: Colors.black,
+                  elevation: 0.1,
                   child:Row(
                     children: <Widget>[
 
@@ -105,18 +67,21 @@ SharedPreferences empresa;
                         ),
                       ),
                       Container(
+                        alignment: Alignment.topLeft,
                         width: 70,
                         margin: EdgeInsets.all(3),
                         child: Column(
                           children: [
                             Text(registros[index].name, style: TextStyle( fontSize: 5),),
+                            Text(registros[index].name, style: TextStyle( fontSize: 5),),
+                            
                             
                           ],
                         ),
                       ),
                       Container(
                          width: 20,
-                        child: Text("" +registros[index].alertQuantity,style: TextStyle( fontSize: 5)),
+                        child: Text(registros[index].alertQuantity,style: TextStyle( fontSize: 5)),
 
                       )
                     ],
