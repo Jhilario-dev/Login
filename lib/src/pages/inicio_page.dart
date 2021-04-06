@@ -27,10 +27,11 @@ class _InicioPageState extends State<InicioPage> {
     return SafeArea(
       
       child: DefaultTabController(
-        length: 5,
+        length: 4,
         child: Scaffold(
           backgroundColor: Colors.grey[200],
           appBar: AppBar(
+            
             elevation: 10,
             backgroundColor: Colors.green[400],
             title: Text('Inicio'),
@@ -39,14 +40,15 @@ class _InicioPageState extends State<InicioPage> {
               ],
           ),
         bottomNavigationBar: menu(),
-          body: TabBarView(
-            children: [
-              _productos(),
-              _facturas(),
-              _productos(),
-              _productos(),
-              _productos()
-            ],),
+          body: Container(
+            child: TabBarView(
+              children: [
+                _productos(),
+                _facturas(),
+                _productos(),
+                _productos(),
+              ],),
+          ),
         ),
       ),
     );
@@ -117,6 +119,7 @@ Widget _facturas(){
 }
 Widget menu() {
 return Container(
+  height: 60,
   color: Colors.green[400],
   child: TabBar(
     labelColor: Colors.white,
@@ -126,23 +129,16 @@ return Container(
     indicatorColor: Colors.blue,
     tabs: [
       Tab(
-        text: "Productos",
         icon: Icon(Icons.shopping_bag),
       ),
       Tab(
-        text: "Facturas",
         icon: Icon(Icons.fact_check_rounded),
       ),
       Tab(
-        text: "Clientes",
         icon: Icon(Icons.people),
       ),
       Tab(
-        text: "Cotizacion",
         icon: Icon(Icons.queue_rounded),
-      ),Tab(
-        text: "compra",
-        icon: Icon(Icons.sd_card_alert_sharp),
       ),
     ],
   ),

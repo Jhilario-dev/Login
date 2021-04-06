@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/' :(BuildContext context) =>LoginScreen(),
         'inicio' : (BuildContext context) => InicioPage(),
-        'productos': (BuildContext context) => ProductosPage(),
+        //'productos': (BuildContext context) => ProductosPage(),
         'facturas': (BuildContext context) => FacturaPage(),
       }
     );
